@@ -166,6 +166,11 @@ vim.o.scrolloff = 10
 -- See `:help 'confirm'`
 vim.o.confirm = true
 
+vim.opt.number = true
+vim.opt.relativenumber = true
+
+vim.lsp.set_log_level 'debug'
+
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
@@ -673,7 +678,14 @@ require('lazy').setup({
       local servers = {
         -- clangd = {},
         -- gopls = {},
-        -- pyright = {},
+        terraformls = {
+          filetypes = { 'terraform', 'tf', 'tfvars', 'hcl' },
+        },
+        pyright = {},
+        tflint = {},
+        terraform = {
+          filetypes = { 'terraform', 'tf', 'tfvars', 'hcl' },
+        },
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
@@ -683,7 +695,6 @@ require('lazy').setup({
         -- But for many setups, the LSP (`ts_ls`) will work just fine
         -- ts_ls = {},
         --
-
         lua_ls = {
           -- cmd = { ... },
           -- filetypes = { ... },
@@ -716,6 +727,8 @@ require('lazy').setup({
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
+        'tflint',
+        'terraformls',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
@@ -768,6 +781,10 @@ require('lazy').setup({
       end,
       formatters_by_ft = {
         lua = { 'stylua' },
+        hcl = { 'packer_fmt' },
+        terraform = { 'terraform_fmt' },
+        tf = { 'terraform_fmt' },
+        ['terraform-vars'] = { 'terraform_fmt' },
         -- Conform can also run multiple formatters sequentially
         -- python = { "isort", "black" },
         --
@@ -814,7 +831,7 @@ require('lazy').setup({
     --- @type blink.cmp.Config
     opts = {
       keymap = {
-        -- 'default' (recommended) for mappings similar to built-in completions
+        -- 'default' (recommended) for mappings similar to built-inmpletions
         --   <c-y> to accept ([y]es) the completion.
         --    This will auto-import if your LSP supports it.
         --    This will expand snippets if the LSP sent a snippet.
@@ -944,7 +961,7 @@ require('lazy').setup({
     main = 'nvim-treesitter.configs', -- Sets main module to use for opts
     -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
     opts = {
-      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' },
+      ensure_installed = { 'bash', 'c', 'diff', 'hcl', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'terraform', 'vim', 'vimdoc' },
       -- Autoinstall languages that are not installed
       auto_install = true,
       highlight = {
@@ -973,18 +990,20 @@ require('lazy').setup({
   --  Here are some example plugins that I've included in the Kickstart repository.
   --  Uncomment any of the lines below to enable them (you will need to restart nvim).
   --
-  -- require 'kickstart.plugins.debug',
-  -- require 'kickstart.plugins.indent_line',
-  -- require 'kickstart.plugins.lint',
-  -- require 'kickstart.plugins.autopairs',
-  -- require 'kickstart.plugins.neo-tree',
-  -- require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
+  require 'kickstart.plugins.debug',
+  require 'kickstart.plugins.indent_line',
+  require 'kickstart.plugins.lint',
+  require 'kickstart.plugins.autopairs',
+  require 'kickstart.plugins.neo-tree',
+  require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
+  require 'kickstart.plugins.telescope-terraform',
+  require 'kickstart.plugins.telescope-terraform-doc',
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --    This is the easiest way to modularize your config.
   --
   --  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
-  -- { import = 'custom.plugins' },
+  { import = 'custom.plugins' },
   --
   -- For additional information with loading, sourcing and examples see `:help lazy.nvim-🔌-plugin-spec`
   -- Or use telescope!
