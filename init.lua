@@ -682,10 +682,12 @@ require('lazy').setup({
           filetypes = { 'terraform', 'tf', 'tfvars', 'hcl' },
         },
         pyright = {},
-        tflint = {},
-        terraform = {
+        tflint = {
           filetypes = { 'terraform', 'tf', 'tfvars', 'hcl' },
         },
+        -- jterraform = {
+        -- filetypes = { 'terraform', 'tf', 'tfvars', 'hcl' },
+        --},
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
