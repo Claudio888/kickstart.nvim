@@ -169,7 +169,7 @@ vim.o.confirm = true
 vim.opt.number = true
 vim.opt.relativenumber = true
 
-vim.lsp.set_log_level 'debug'
+vim.lsp.set_log_level 'warn'
 
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
