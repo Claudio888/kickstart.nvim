@@ -15,6 +15,11 @@ return {
   },
   opts = {
     filesystem = {
+      filtered_items = {
+        visible = true, -- mostra os arquivos ocultos
+        hide_dotfiles = false, -- não esconde arquivos que começam com ponto
+        hide_gitignored = false, -- opcional: mostra arquivos ignorados pelo Git
+      },
       window = {
         mappings = {
           ['\\'] = 'close_window',
